@@ -106,7 +106,7 @@ julia run.jl 50000
 ```bash
 # TypeScript
 cd Node.js/TypeScript
-npm run simulate
+node dist/cli.js
 
 # Zero-dependency JavaScript
 cd Node.js/JavaScript
