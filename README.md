@@ -186,15 +186,15 @@ Precompiled native release packages for all supported platforms and architecture
 
 | Platform / Architecture | Release Archive | Size | Description |
 | :--- | :--- | :---: | :--- |
-| **macOS Apple Silicon (`arm64`)** | [`unicagd-aml-v1.3.0-macos-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-macos-arm64.tar.gz) | 41.5 KB | Native Apple Silicon M1-M4 (Metal GPU + SIMD) |
-| **macOS Intel (`x86_64`)** | [`unicagd-aml-v1.3.0-macos-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-macos-x86_64.tar.gz) | 35.2 KB | Native Intel x86_64 Mac |
-| **Linux (`x86_64`)** | [`unicagd-aml-v1.3.0-linux-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-linux-x86_64.tar.gz) | 74.2 KB | Native Linux x86_64 (Vulkan & CUDA) |
-| **Linux ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-linux-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-linux-arm64.tar.gz) | 47.6 KB | Native Linux ARM64 (aarch64) |
-| **Windows (`x86_64`)** | [`unicagd-aml-v1.3.0-windows-x86_64.zip`](dist/releases/unicagd-aml-v1.3.0-windows-x86_64.zip) | 247.4 KB | Windows x86_64 (`.exe`, `.dll`, batch launcher) |
-| **Windows ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-windows-arm64.zip`](dist/releases/unicagd-aml-v1.3.0-windows-arm64.zip) | 247.4 KB | Windows on ARM64 Snapdragon / VM |
-| **FreeBSD (`x86_64`)** | [`unicagd-aml-v1.3.0-freebsd-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-freebsd-x86_64.tar.gz) | 32.4 KB | FreeBSD 13/14 x86_64 ELF library |
-| **FreeBSD ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-freebsd-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-freebsd-arm64.tar.gz) | 47.7 KB | FreeBSD 13/14 ARM64 ELF library |
-| **Universal Full Source** | [`unicagd-aml-v1.3.0-universal-src.tar.gz`](dist/releases/unicagd-aml-v1.3.0-universal-src.tar.gz) | 4.06 MB | Complete source with all language bindings |
+| **macOS Apple Silicon (`arm64`)** | [`unicagd-aml-v1.3.0-macos-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-macos-arm64.tar.gz) | 25.0 KB | Native Apple Silicon M1-M4 (Metal GPU + SIMD) |
+| **macOS Intel (`x86_64`)** | [`unicagd-aml-v1.3.0-macos-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-macos-x86_64.tar.gz) | 18.6 KB | Native Intel x86_64 Mac |
+| **Linux (`x86_64`)** | [`unicagd-aml-v1.3.0-linux-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-linux-x86_64.tar.gz) | 57.8 KB | Native Linux x86_64 (Vulkan & CUDA) |
+| **Linux ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-linux-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-linux-arm64.tar.gz) | 31.9 KB | Native Linux ARM64 (aarch64) |
+| **Windows (`x86_64`)** | [`unicagd-aml-v1.3.0-windows-x86_64.zip`](dist/releases/unicagd-aml-v1.3.0-windows-x86_64.zip) | 232.5 KB | Windows x86_64 (`.exe`, `.dll`, batch launcher) |
+| **Windows ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-windows-arm64.zip`](dist/releases/unicagd-aml-v1.3.0-windows-arm64.zip) | 232.5 KB | Windows on ARM64 Snapdragon / VM |
+| **FreeBSD (`x86_64`)** | [`unicagd-aml-v1.3.0-freebsd-x86_64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-freebsd-x86_64.tar.gz) | 15.8 KB | FreeBSD 13/14 x86_64 ELF library |
+| **FreeBSD ARM64 (`aarch64`)** | [`unicagd-aml-v1.3.0-freebsd-arm64.tar.gz`](dist/releases/unicagd-aml-v1.3.0-freebsd-arm64.tar.gz) | 31.9 KB | FreeBSD 13/14 ARM64 ELF library |
+| **Universal Full Source** | [`unicagd-aml-v1.3.0-universal-src.tar.gz`](dist/releases/unicagd-aml-v1.3.0-universal-src.tar.gz) | 3.12 MB | Complete source with all language bindings |
 
 *All release archives and checksums are verified in [`dist/releases/CHECKSUMS.sha256`](dist/releases/CHECKSUMS.sha256) and [`dist/releases/RELEASE_MANIFEST_v1.3.0.json`](dist/releases/RELEASE_MANIFEST_v1.3.0.json).*
 
