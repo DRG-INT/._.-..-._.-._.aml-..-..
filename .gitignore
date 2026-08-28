@@ -1,0 +1,24 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Cache and temporary directories
+.ruff_cache/
+__pycache__/
+*.pyc
+
+# Rust build target (keep release packages in dist/releases)
+Rust/target/
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Temporary build objects
+*.o
+*.obj
+*.spv
+
+# Keep dist/releases and precompiled binaries
+!dist/releases/
+!dist/bin/

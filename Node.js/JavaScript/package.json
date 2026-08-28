@@ -1,0 +1,14 @@
+{
+  "name": "unicagd-aml-javascript",
+  "version": "1.3.0",
+  "description": "UNICAGD_AML Pure JavaScript Zero-Dependency Engine & TUI",
+  "main": "index.js",
+  "bin": {
+    "unicagd-aml-js": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "simulate": "node index.js --count 50000"
+  },
+  "license": "Apache-2.0"
+}

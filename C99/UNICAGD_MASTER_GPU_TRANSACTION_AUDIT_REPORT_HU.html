@@ -1,0 +1,121 @@
+<!doctype html>
+<html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>UNICAGD_AML - GPU Tranzakciós Audit Jelentés</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0d1117; color: #c9d1d9; padding: 30px; line-height: 1.6; }
+.container { max-width: 1200px; margin: auto; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 24px; }
+h1, h2 { color: #58a6ff; }
+table { width: 100%; border-collapse: collapse; margin-top: 16px; margin-bottom: 24px; }
+th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+th { background: #21262d; color: #f0f6fc; }
+.critical { color: #f85149; font-weight: bold; }
+.high { color: #d29922; font-weight: bold; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #238636; color: white; }
+</style></head><body><div class='container'>
+<h1>UNICAGD_AML v1.3.0 - GPU Tranzakciós Csalás- és Pénzmosás-Audit Jelentés</h1>
+<p><span class='badge'>Hardveres Gyorsítás</span> <strong>Feldolgozó Egység:</strong> Apple Silicon M2 / Metal GPU (SIMD Accelerated)</p>
+<table><tr><th>Elemzett Tranzakció</th><th>Teljes Forgalom</th><th>Feldolgozási Idő</th><th>Sebesség</th><th>Generált Riasztások</th><th>Gyanúsított Összeg</th></tr>
+<tr><td>10000 db</td><td>$7108258.00 USD</td><td><strong>0.0020 s</strong></td><td><strong>5000000.0 tx/s</strong></td><td class='critical'>1036 db</td><td class='critical'>$5851212.00 USD</td></tr></table>
+<h2>Azonosított Gyanús Riasztások és Bűncselekményi Minták</h2>
+<table><tr><th>Súlyosság</th><th>Szabály</th><th>Tipológia</th><th>Érintett Számla</th><th>Összeg</th><th>Indoklás</th></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_218_CARD_1</code></td><td>$1296.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4992</code></td><td>$8630.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_89_CARD_1</code></td><td>$2706.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3874</code></td><td>$9054.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_451_CARD_2</code></td><td>$2777.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_190_CARD_0</code></td><td>$1307.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_52_CARD_2</code></td><td>$2788.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_184_CARD_0</code></td><td>$3529.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_184_CARD_0</code></td><td>$3529.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_405_CARD_0</code></td><td>$2936.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4586</code></td><td>$8533.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_24_CARD_1</code></td><td>$3467.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_24_CARD_1</code></td><td>$3467.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_2493</code></td><td>$7997.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3685</code></td><td>$9898.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_545</code></td><td>$8647.00 EUR</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_545</code></td><td>$8647.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_243_CARD_0</code></td><td>$1689.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_234_CARD_2</code></td><td>$2655.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_234_CARD_2</code></td><td>$2655.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3403</code></td><td>$8879.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_1609</code></td><td>$8967.00 EUR</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1609</code></td><td>$8967.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_102_CARD_1</code></td><td>$1888.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4248</code></td><td>$7894.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4315</code></td><td>$8078.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_1066</code></td><td>$9002.00 EUR</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1066</code></td><td>$9002.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_56_CARD_0</code></td><td>$3141.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_1885</code></td><td>$8363.00 HUF</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1885</code></td><td>$8363.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3139</code></td><td>$8395.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_2382</code></td><td>$9083.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_246_CARD_0</code></td><td>$3135.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_2869</code></td><td>$8860.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_148_CARD_2</code></td><td>$3325.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3927</code></td><td>$8194.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1233</code></td><td>$8465.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_460_CARD_1</code></td><td>$1328.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_335_CARD_2</code></td><td>$1230.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_906</code></td><td>$8409.00 EUR</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_906</code></td><td>$8409.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_424_CARD_0</code></td><td>$2721.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_67</code></td><td>$8301.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3602</code></td><td>$8643.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_111_CARD_1</code></td><td>$2571.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_96_CARD_1</code></td><td>$3403.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_1112</code></td><td>$9287.00 EUR</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1112</code></td><td>$9287.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_4997</code></td><td>$9812.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4997</code></td><td>$9812.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_288_CARD_0</code></td><td>$2067.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1925</code></td><td>$8493.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1698</code></td><td>$9462.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_493_CARD_1</code></td><td>$3549.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_281</code></td><td>$9448.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_2223</code></td><td>$8310.00 HUF</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_2223</code></td><td>$8310.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1666</code></td><td>$7987.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_184_CARD_0</code></td><td>$2146.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_386_CARD_2</code></td><td>$2788.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3387</code></td><td>$8033.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4243</code></td><td>$9137.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3382</code></td><td>$7800.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_309_CARD_1</code></td><td>$1608.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_183</code></td><td>$8966.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_191_CARD_0</code></td><td>$1999.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_457_CARD_2</code></td><td>$3103.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_195_CARD_0</code></td><td>$1790.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_195_CARD_0</code></td><td>$1790.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4062</code></td><td>$9435.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_882</code></td><td>$9128.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_470_CARD_0</code></td><td>$1917.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_470_CARD_0</code></td><td>$1917.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_332_CARD_0</code></td><td>$2172.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_444_CARD_0</code></td><td>$2584.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>NODE_957</code></td><td>$8305.00 HUF</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_957</code></td><td>$8305.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_266_CARD_2</code></td><td>$2879.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_235_CARD_2</code></td><td>$2020.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='critical'>CRITICAL</td><td>AML-003</td><td>Sanctions Evasion / High-Risk Jurisdictional Transfer</td><td><code>USER_138_CARD_2</code></td><td>$1804.00 USD</td><td>Transaction flagged: High-risk FATF/Sanctioned jurisdiction match: SC.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_138_CARD_2</code></td><td>$1804.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4791</code></td><td>$9722.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1479</code></td><td>$9801.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1616</code></td><td>$8503.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_2666</code></td><td>$8201.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_134_CARD_0</code></td><td>$2431.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_163</code></td><td>$8960.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1485</code></td><td>$8254.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3200</code></td><td>$8197.00 HUF</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_404_CARD_1</code></td><td>$2888.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_3323</code></td><td>$8905.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_4270</code></td><td>$7999.00 EUR</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_0_CARD_0</code></td><td>$3610.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_356_CARD_2</code></td><td>$2564.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_295_CARD_2</code></td><td>$2323.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1032</code></td><td>$8943.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>AML-001</td><td>Structuring (Smurfing)</td><td><code>NODE_1345</code></td><td>$8288.00 USD</td><td>Sub-threshold disbursement designed to evade statutory 10k CTR limit.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_227_CARD_1</code></td><td>$1383.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+<tr><td class='high'>HIGH</td><td>FRD-003</td><td>Card Fraud / Anomalous Spike</td><td><code>USER_405_CARD_2</code></td><td>$3687.00 USD</td><td>High-value card disbursement exceeding baseline average by 6.2x.</td></tr>
+</table></div></body></html>

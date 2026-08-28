@@ -1,0 +1,14 @@
+{
+  "name": "unicagd-aml-typescript",
+  "version": "1.3.0",
+  "description": "UNICAGD_AML TypeScript High-Speed Engine & TUI Renderer",
+  "main": "dist/src/cli.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsc -p tsconfig.json && node dist/src/cli.js",
+    "simulate": "node dist/src/cli.js --count 50000 --theme pacman"
+  },
+  "keywords": ["aml", "fraud", "tui", "gpu", "metal", "vulkan", "fincen", "mnb"],
+  "author": "UNICAGD Core Team",
+  "license": "Apache-2.0"
+}

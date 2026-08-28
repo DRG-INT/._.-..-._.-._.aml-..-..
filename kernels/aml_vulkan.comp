@@ -1,0 +1,66 @@
+#version 450
+// UNICAGD_AML - Vulkan GLSL Compute Kernel
+// Target: Linux x86_64/arm64, Windows x86_64/arm64, FreeBSD x86_64/arm64
+
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+struct VulkanTransaction {
+    uint source_node;
+    uint target_node;
+    float amount;
+    uint timestamp_step;
+    uint country_code;
+    uint is_card;
+};
+
+struct VulkanAlertResult {
+    uint alert_type;
+    uint subject_node;
+    float suspicious_volume;
+    float confidence;
+};
+
+layout(std430, binding = 0) readonly buffer InputBuffer {
+    VulkanTransaction transactions[];
+};
+
+layout(std430, binding = 1) writeonly buffer OutputBuffer {
+    VulkanAlertResult alerts[];
+};
+
+layout(push_constant) uniform PushConstants {
+    uint total_transactions;
+};
+
+void main() {
+    uint id = gl_GlobalInvocationID.x;
+    if (id >= total_transactions) return;
+
+    VulkanTransaction current = transactions[id];
+    uint src = current.source_node;
+    uint dst = current.target_node;
+
+    alerts[id].alert_type = 0;
+    alerts[id].subject_node = src;
+    alerts[id].suspicious_volume = 0.0;
+    alerts[id].confidence = 0.0;
+
+    // Sanction check
+    if (current.country_code == 0x5343 || current.country_code == 0x5255) {
+        alerts[id].alert_type = 4;
+        alerts[id].suspicious_volume = current.amount;
+        alerts[id].confidence = 0.98;
+        return;
+    }
+
+    if (src == dst) return;
+
+    for (uint i = 0; i < total_transactions; i++) {
+        if (transactions[i].source_node == dst && transactions[i].target_node == src) {
+            alerts[id].alert_type = 3;
+            alerts[id].suspicious_volume = current.amount;
+            alerts[id].confidence = 0.96;
+            break;
+        }
+    }
+}
