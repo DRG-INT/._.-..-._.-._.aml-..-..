@@ -5,7 +5,7 @@ LDFLAGS ?=
 all: libunicagd_aml.dylib unicagd_aml_c99
 
 libunicagd_aml.dylib: unicagd_aml_core.c ../include/unicagd_aml_core.h
-	$(CC) $(CFLAGS) -shared unicagd_aml_core.c -o libunicagd_aml.dylib
+	$(CC) $(CFLAGS) -shared -install_name @rpath/libunicagd_aml.dylib unicagd_aml_core.c -o libunicagd_aml.dylib
 
 libunicagd_aml.so: unicagd_aml_core.c ../include/unicagd_aml_core.h
 	$(CC) $(CFLAGS) -shared unicagd_aml_core.c -o libunicagd_aml.so
