@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-"""UNICAGD_AML Python Engine & FFI Bridge.
+"""
+UNICAGD_AML Python Engine & FFI Bridge.
+UNICAGD_AML Python Motor & FFI Híd.
 
 Turbocharged Anti-Money Laundering (AML) & Fraud Detection Engine.
+Turbofeltöltős Pénzmosás-ellenes (AML) és Csalás-detekció Motor.
+
 Connects Python with the native C99/C23 SIMD pipeline via type-safe ctypes FFI,
 with full pure-Python SIMD fallback support.
+Csatlakozik a natív C99/C23 SIMD pipeline-hoz típusbiztos ctypes FFI-n keresztül,
+teljes pure-Python SIMD fallback támogatással.
 """
 
 import sys
@@ -14,9 +20,11 @@ import random
 import platform
 from typing import Optional
 
-
+"""
+Locate the native shared library across platforms.
+Natív megosztott könyvtár keresése platformok között.
+"""
 def find_library_path() -> Optional[str]:
-    """Locate the native shared library across platforms."""
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "C99"))
     system = platform.system()
 
@@ -34,13 +42,16 @@ def find_library_path() -> Optional[str]:
 
     return os.path.join(base_dir, candidates[0])
 
-
 # =============================================================================
 # Native C Struct Layouts
+# Natív C struktúra elrendezések
 # =============================================================================
 
+"""
+C struct representation of unicagd_transaction_t.
+unicagd_transaction_t C struktúra reprezentáció.
+"""
 class CTransaction(ctypes.Structure):
-    """C struct representation of unicagd_transaction_t."""
     _fields_ = [
         ("transaction_id", ctypes.c_char * 64),
         ("originator_account", ctypes.c_char * 64),
@@ -57,9 +68,11 @@ class CTransaction(ctypes.Structure):
         ("is_card_transaction", ctypes.c_bool)
     ]
 
-
+"""
+C struct representation of unicagd_alert_t.
+unicagd_alert_t C struktúra reprezentáció.
+"""
 class CAlert(ctypes.Structure):
-    """C struct representation of unicagd_alert_t."""
     _fields_ = [
         ("alert_id", ctypes.c_char * 64),
         ("rule_id", ctypes.c_char * 16),
@@ -76,11 +89,12 @@ class CAlert(ctypes.Structure):
         ("timestamp_ms", ctypes.c_uint64)
     ]
 
-
+"""
+C struct representation of unicagd_report_t.
+unicagd_report_t C struktúra reprezentáció.
+"""
 class CReport(ctypes.Structure):
-    """C struct representation of unicagd_report_t."""
     pass
-
 
 CReport._fields_ = [
     ("total_transactions_analyzed", ctypes.c_uint64),
@@ -98,13 +112,16 @@ CReport._fields_ = [
     ("alerts", ctypes.POINTER(CAlert))
 ]
 
-
 # =============================================================================
 # Native FFI Engine Setup
+# Natív FFI Motor beállítása
 # =============================================================================
 
+"""
+Load native CDLL and strictly configure argtypes & restype for all symbols.
+Natív CDLL betöltése és szigorú argtypes & restype konfigurálása minden szimbólumhoz.
+"""
 def load_native_library(lib_path: str):
-    """Load native CDLL and strictly configure argtypes & restype for all symbols."""
     cdll = ctypes.CDLL(lib_path)
 
     # unicagd_aml_generate_synthetic_stream
@@ -160,11 +177,15 @@ def load_native_library(lib_path: str):
 
     return cdll
 
-
 # =============================================================================
 # Pure Python Fallback Engine
+# Pure Python Tartalék Motor
 # =============================================================================
 
+"""
+Fallback engine running directly in pure Python.
+Tartalék motor, amely közvetlenül pure Python-ban fut.
+"""
 def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
     """Fallback engine running directly in pure Python."""
     countries = ["US", "HU", "DE", "FR", "GB", "CH", "SC", "RU", "KY"]
@@ -175,6 +196,10 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
     transactions = []
     base_time = int(time.time() * 1000)
 
+    """
+    Generate synthetic transaction stream.
+    Szintetikus tranzakciófolyam generálása.
+    """
     for i in range(count):
         is_fraud = random.random() < fraud_ratio
         is_card = random.choice([True, False])
@@ -218,11 +243,15 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
     critical_alerts = 0
     high_alerts = 0
 
+    """
+    Evaluate transactions for AML/fraud patterns.
+    Tranzakciók értékelése AML/csalási minták szempontjából.
+    """
     for tx in transactions:
         amt = tx["amount"]
         total_vol += amt
 
-        # AML-003: Sanctions
+        # AML-003: Sanctions / Szankciók
         if tx["country"] in sanctions:
             alerts.append({
                 "rule_id": "AML-003",
@@ -235,7 +264,7 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
             })
             suspicious_vol += amt
             critical_alerts += 1
-        # AML-001: Structuring
+        # AML-001: Structuring / Szerkeztetés
         elif 7500.0 <= amt < 10000.0 and not tx["is_card"]:
             alerts.append({
                 "rule_id": "AML-001",
@@ -248,7 +277,7 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
             })
             suspicious_vol += amt
             high_alerts += 1
-        # FRD-003: Card Fraud Anomaly
+        # FRD-003: Card Fraud Anomaly / Kártyasalcsalás anomália
         elif tx["is_card"] and amt > 1200.0:
             alerts.append({
                 "rule_id": "FRD-003",
@@ -266,7 +295,7 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
     duration_sec = max(0.0001, t_end - t_start)
     tx_per_sec = count / duration_sec
 
-    # Render final report
+    # Render final report / Végső jelentés megjelenítése
     print("\n\033[1;36m================================================================================\033[0m")
     print("\033[1;37m  AML & ANTI-FRAUD TRANSACTION EVALUATION REPORT\033[0m")
     print("\033[1;36m================================================================================\033[0m\n")
@@ -286,16 +315,19 @@ def run_pure_python_simulation(count: int, fraud_ratio: float, hardware: str):
         print(f"{sev_str:<19} | {a['rule_id']:<12} | {a['typology']:<28} | \033[1;36m{a['subject']:<18}\033[0m | \033[1;37m{a['amount']:8.2f} {a['currency']:<4}\033[0m")
         print(f"  \033[0;37m└── Reason: {a['reason']}\033[0m\n")
 
-
 # =============================================================================
 # Main Simulation Orchestrator
+# Fő szimuláció összehangoló
 # =============================================================================
 
+"""
+Execute high-speed AML simulation using native C99 dylib with automatic fallback.
+Magas sebességű AML szimuláció végrehajtása natív C99 dylib használatával automatikus fallback-kal.
+"""
 def run_simulation(count: int = 50000, fraud_ratio: float = 0.08, hardware: str = "Python 3.12+ FFI / Apple Silicon GPU"):
-    """Execute high-speed AML simulation using native C99 dylib with automatic fallback."""
     print("\033[2J\033[H", end="")
     print("\033[1;36m┌────────────────────────────────────────────────────────────────────────────────────────┐\033[0m")
-    print(f"\033[1;36m│\033[1;37m  🚀 {'UNICAGD_AML [Python FFI Engine] - High-Speed Stream & Audit':<80} \033[1;36m│\033[0m")
+    print(f"\033[1;36m│\x1b[1;37m  🚀 {'UNICAGD_AML [Python FFI Engine] - High-Speed Stream & Audit':<80} \033[1;36m│\033[0m")
     print(f"\033[1;36m│\033[0;33m  ⚡ Compute Engine: {hardware:<71} \033[1;36m│\033[0m")
     print("\033[1;36m└────────────────────────────────────────────────────────────────────────────────────────┘\033[0m\n")
 
@@ -337,12 +369,14 @@ def run_simulation(count: int = 50000, fraud_ratio: float = 0.08, hardware: str 
         except Exception as e:
             print(f"  \033[1;31m[FFI Warning]\033[0m Fallback to pure Python SIMD: {e}\n")
 
-    # Pure Python Fallback
+    # Pure Python Fallback / Pure Python Tartalék
     run_pure_python_simulation(count, fraud_ratio, hardware="Python 3.12+ (Pure Engine Fallback)")
 
-
+"""
+Parse CLI options for transaction count, fraud ratio, and hardware label.
+CLI opciók feldolgozása tranzakciószám, csalási arány és hardver címke számára.
+"""
 def parse_args():
-    """Parse CLI options for transaction count, fraud ratio, and hardware label."""
     count = 50000
     fraud_ratio = 0.08
     hardware = "Python 3.12+ FFI / Apple Silicon GPU"

@@ -7,6 +7,10 @@
 #include <time.h>
 #include <math.h>
 
+/*
+ * Platform-specific includes for time functions.
+ * Platform-specifikus includes az időfüggvényekhez.
+ */
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -14,16 +18,36 @@
 #include <sys/time.h>
 #endif
 
+/*
+ * Global current theme state.
+ * Globális aktuális téma állapot.
+ */
 static unicagd_theme_t g_current_theme = THEME_PACMAN;
 
+/*
+ * Initialize the AML engine.
+ * Inicializálja az AML motort.
+ *
+ * @return 0 on success / sikeres végrehajtás esetén 0.
+ */
 int unicagd_aml_init(void) {
     return 0;
 }
 
+/*
+ * Shutdown and cleanup the AML engine.
+ * Leállítja és takarítja az AML motort.
+ */
 void unicagd_aml_shutdown(void) {
-    // cleanup
+    // cleanup / takarítás
 }
 
+/*
+ * Get current time in milliseconds.
+ * Aktuális idő lekérdezése milliszekundumban.
+ *
+ * @return Current time in milliseconds / Aktuális idő milliszekundumban.
+ */
 static uint64_t get_current_time_ms(void) {
 #ifdef _WIN32
     FILETIME ft;
@@ -39,18 +63,31 @@ static uint64_t get_current_time_ms(void) {
 #endif
 }
 
+/*
+ * Evaluate a batch of transactions for AML/fraud patterns.
+ * Tranzakciók köteg értékelése AML/csalási minták szempontjából.
+ *
+ * @param transactions Array of transactions / Tranzakciók tömbje.
+ * @param count Number of transactions / Tranzakciók száma.
+ * @param hardware_target Hardware description / Hardver leírás.
+ * @return Report with alerts / Riasztásokat tartalmazó jelentés.
+ */
 unicagd_report_t* unicagd_aml_evaluate(
     const unicagd_transaction_t* transactions,
     size_t count,
     const char* hardware_target
 ) {
+    /* Validate input / Bemenet validálása */
     if (!transactions || count == 0) return NULL;
 
+    /* Start timing / Időzítés indítása */
     uint64_t t_start = get_current_time_ms();
 
+    /* Allocate report structure / Jelentés struktúra foglalása */
     unicagd_report_t* report = (unicagd_report_t*)calloc(1, sizeof(unicagd_report_t));
     if (!report) return NULL;
 
+    /* Allocate alerts array / Riasztások tömbjének foglalása */
     report->alerts = (unicagd_alert_t*)calloc(UNICAGD_MAX_ALERTS, sizeof(unicagd_alert_t));
     if (!report->alerts) {
         free(report);
@@ -60,15 +97,23 @@ unicagd_report_t* unicagd_aml_evaluate(
     report->total_transactions_analyzed = count;
     strncpy(report->primary_hardware, hardware_target ? hardware_target : "CPU (C99 Native SIMD)", sizeof(report->primary_hardware) - 1);
 
+    /* Accumulators / Összesítők */
     double total_vol = 0;
     double suspicious_vol = 0;
     uint32_t alert_idx = 0;
 
+    /*
+     * Main evaluation loop.
+     * Fő értékelési ciklus.
+     */
     for (size_t i = 0; i < count; i++) {
         const unicagd_transaction_t* tx = &transactions[i];
         total_vol += tx->amount;
 
-        // 1. High Risk Jurisdiction / Sanctions (AML-003)
+        /*
+         * Rule 1: High Risk Jurisdiction / Sanctions (AML-003).
+         * Szabály 1: Kockázatos joghatóság / szankciók (AML-003).
+         */
         if (strcmp(tx->country, "SC") == 0 || strcmp(tx->country, "RU") == 0 || strcmp(tx->country, "IR") == 0 || strcmp(tx->country, "KP") == 0) {
             if (alert_idx < UNICAGD_MAX_ALERTS) {
                 unicagd_alert_t* al = &report->alerts[alert_idx++];
@@ -90,7 +135,10 @@ unicagd_report_t* unicagd_aml_evaluate(
             }
         }
 
-        // 2. Structuring / Smurfing (AML-001)
+        /*
+         * Rule 2: Structuring / Smurfing (AML-001).
+         * Szabály 2: Szerkeztetés / csoportosítás (AML-001).
+         */
         if (tx->amount >= 7500.0 && tx->amount < 10000.0 && !tx->is_card_transaction) {
             if (alert_idx < UNICAGD_MAX_ALERTS) {
                 unicagd_alert_t* al = &report->alerts[alert_idx++];
@@ -111,7 +159,10 @@ unicagd_report_t* unicagd_aml_evaluate(
             }
         }
 
-        // 3. Card Fraud Anomaly (FRD-003)
+        /*
+         * Rule 3: Card Fraud Anomaly (FRD-003).
+         * Szabály 3: Kártyasalcsalás anomália (FRD-003).
+         */
         if (tx->is_card_transaction && tx->amount > 1200.0) {
             if (alert_idx < UNICAGD_MAX_ALERTS) {
                 unicagd_alert_t* al = &report->alerts[alert_idx++];
@@ -133,6 +184,7 @@ unicagd_report_t* unicagd_aml_evaluate(
         }
     }
 
+    /* End timing and calculate metrics / Időzítés vége és metrikák számítása */
     uint64_t t_end = get_current_time_ms();
     double duration_sec = (double)(t_end - t_start) / 1000.0;
     if (duration_sec < 0.0001) duration_sec = 0.0001;
@@ -146,35 +198,60 @@ unicagd_report_t* unicagd_aml_evaluate(
     return report;
 }
 
+/*
+ * Free report memory.
+ * Jelentés memória felszabadítása.
+ *
+ * @param report Report to free / Felszabadítandó jelentés.
+ */
 void unicagd_aml_free_report(unicagd_report_t* report) {
     if (!report) return;
     if (report->alerts) free(report->alerts);
     free(report);
 }
 
+/*
+ * Generate synthetic transaction stream.
+ * Szintetikus tranzakciófolyam generálása.
+ *
+ * @param buffer Output transaction buffer / Kimeneti tranzakció puffer.
+ * @param capacity Buffer capacity / Puffer kapacitás.
+ * @param fraud_ratio Ratio of fraudulent transactions / Csalási tranzakciók aránya.
+ * @param seed Random seed seed / Random seed érték.
+ * @return Number of generated transactions / Generált tranzakciók száma.
+ */
 size_t unicagd_aml_generate_synthetic_stream(
     unicagd_transaction_t* buffer,
     size_t capacity,
     double fraud_ratio,
     uint64_t seed
 ) {
+    /* Validate input / Bemenet validálása */
     if (!buffer || capacity == 0) return 0;
 
+    /* Seed random generator / Random generátor inicializálása */
     srand((unsigned int)seed);
     const char* countries[] = {"US", "HU", "DE", "FR", "GB", "CH", "SC", "RU", "KY"};
     const char* channels[] = {"ACH", "SWIFT", "SEPA", "CARD_CHIP", "CARD_SWIPE", "ONLINE"};
 
+    /* Base timestamp for transactions / Tranzakciók alap időbélyege */
     uint64_t base_time = 1787920000000ULL;
 
+    /*
+     * Generate each transaction.
+     * Egyes tranzakciók generálása.
+     */
     for (size_t i = 0; i < capacity; i++) {
         unicagd_transaction_t* tx = &buffer[i];
         snprintf(tx->transaction_id, sizeof(tx->transaction_id), "TX_%zu_%04u", i + 1, (unsigned)(rand() % 10000));
 
+        /* Determine if this transaction is fraudulent / Meghatározza, hogy a tranzakció csaló-e */
         bool is_fraud = ((double)rand() / (double)RAND_MAX) < fraud_ratio;
         bool is_card = (rand() % 2 == 0);
         tx->is_card_transaction = is_card;
 
         if (is_card) {
+            /* Card transaction parameters / Kártya tranzakció paraméterek */
             uint32_t user_id = rand() % 500;
             uint32_t card_id = rand() % 3;
             uint64_t merchant_id = (uint64_t)rand() * 100000ULL + (uint64_t)rand();
@@ -183,6 +260,7 @@ size_t unicagd_aml_generate_synthetic_stream(
             tx->amount = is_fraud ? (1200.0 + (rand() % 2500)) : (5.0 + (rand() % 120));
             strcpy(tx->currency, "USD");
         } else {
+            /* Wire/bank transaction parameters / Banki átutalási paraméterek */
             uint32_t src_node = rand() % 5000;
             uint32_t dst_node = rand() % 5000;
             if (src_node == dst_node) dst_node = (src_node + 1) % 5000;
@@ -198,8 +276,9 @@ size_t unicagd_aml_generate_synthetic_stream(
         tx->lat = 47.4979 + ((rand() % 100) - 50) * 0.01;
         tx->lon = 19.0402 + ((rand() % 100) - 50) * 0.01;
 
+        /* Fraud trigger for Seychelles / Csalási trigger Seychelles-hez */
         if (is_fraud && (rand() % 4 == 0)) {
-            strcpy(tx->country, "SC"); // Seychelles sanction trigger
+            strcpy(tx->country, "SC"); // Seychelles sanction trigger / Seychelles szankció trigger
         } else {
             int c_idx = rand() % 6;
             strcpy(tx->country, countries[c_idx]);
@@ -212,21 +291,47 @@ size_t unicagd_aml_generate_synthetic_stream(
     return capacity;
 }
 
-// -----------------------------------------------------------------------------
+// =============================================================================
 // TUI RENDERER WITH KERNEL/PACMAN DECORATIONS
-// -----------------------------------------------------------------------------
+// TUI MEGJELENÍTŐ KERNEL/PACMAN DEKORÁCIÓKKAL
+// =============================================================================
+
+/*
+ * Set the active TUI theme.
+ * Beállítja az aktív TUI témát.
+ *
+ * @param theme Theme to activate / Aktiválandó téma.
+ */
 void unicagd_tui_set_theme(unicagd_theme_t theme) {
     g_current_theme = theme;
 }
 
+/*
+ * Render the application banner.
+ * Alkalmazás banner megjelenítése.
+ *
+ * @param title Banner title / Banner cím.
+ * @param hardware_info Hardware description / Hardver leírás.
+ */
 void unicagd_tui_render_banner(const char* title, const char* hardware_info) {
-    printf("\033[2J\033[H"); // Clear screen
+    printf("\033[2J\033[H"); // Clear screen / Képernyő törlése
     printf("\033[1;36m┌────────────────────────────────────────────────────────────────────────────────────────┐\033[0m\n");
     printf("\033[1;36m│\033[1;37m  🚀 %-80s \033[1;36m│\033[0m\n", title);
     printf("\033[1;36m│\033[0;33m  ⚡ Compute Engine: %-71s \033[1;36m│\033[0m\n", hardware_info);
     printf("\033[1;36m└────────────────────────────────────────────────────────────────────────────────────────┘\033[0m\n");
 }
 
+/*
+ * Render progress bar with animated indicators.
+ * Animált progressz sáv megjelenítése.
+ *
+ * @param current Current progress / Jelenlegi folyamat.
+ * @param total Total items / Összes elem.
+ * @param elapsed_sec Elapsed seconds / Eltelt másodperc.
+ * @param tx_per_sec Throughput in transactions per second / Tranzakciók per másodperc.
+ * @param alert_count Number of alerts / Riasztások száma.
+ * @param flagged_volume Flagged amount / Flagelt összeg.
+ */
 void unicagd_tui_render_progress(
     uint64_t current,
     uint64_t total,
@@ -240,7 +345,7 @@ void unicagd_tui_render_progress(
     if (progress > 1.0) progress = 1.0;
     int filled = (int)(progress * bar_width);
 
-    // Pacman / Cyberpunk animation character
+    /* Pacman / Cyberpunk animation bar / Pacman / Cyberpunk animációs sáv */
     char pacman_bar[64];
     memset(pacman_bar, 0, sizeof(pacman_bar));
 
@@ -248,37 +353,51 @@ void unicagd_tui_render_progress(
         if (i < filled - 1) {
             pacman_bar[i] = '=';
         } else if (i == filled - 1) {
-            pacman_bar[i] = (current % 2 == 0) ? 'C' : 'c'; // Pacman mouth
+            pacman_bar[i] = (current % 2 == 0) ? 'C' : 'c'; // Pacman mouth / Pacman száj
         } else {
-            pacman_bar[i] = (i % 3 == 0) ? 'o' : '-'; // Pac-dots
+            pacman_bar[i] = (i % 3 == 0) ? 'o' : '-'; // Pac-dots / Pac-dots
         }
     }
 
+    /* Format elapsed time / Eltelt idő formázása */
     uint32_t hours = (uint32_t)(elapsed_sec / 3600);
     uint32_t mins = (uint32_t)((elapsed_sec - hours * 3600) / 60);
     double secs = elapsed_sec - (hours * 3600) - (mins * 60);
 
-    // Pinned dashboard line
+    /* Pinned dashboard line / Rögzített dashboard sor */
     printf("\r\033[1;33m[%s]\033[0m \033[1;37m%5.1f%%\033[0m | \033[1;32m⏱ %02u:%02u:%04.1f\033[0m | \033[1;36m%8.0f tx/s\033[0m | \033[1;31m🚨 %u alerts ($%.0f)\033[0m\n",
            pacman_bar, progress * 100.0, mins, (uint32_t)secs, (secs - (uint32_t)secs) * 10, tx_per_sec, alert_count, flagged_volume);
     fflush(stdout);
 }
 
-void unicagd_tui_render_log_entry(
+/*
+ * Render a single transaction log entry.
+ * Egyetlen tranzakció naplóbejegyzés megjelenítése.
+ *
+ * @param tx Transaction data / Tranzakció adatok.
+ * @param alert_opt Optional alert data / Opcionális riasztás adatok.
+ */
+void unicagd_tui_reender_log_entry(
     const unicagd_transaction_t* tx,
     const unicagd_alert_t* alert_opt
 ) {
     if (alert_opt) {
-        // Minimal bold red/yellow highlight ONLY on suspicious alerts
+        /* Minimal bold red/yellow highlight ONLY on suspicious alerts / Minimális félkövér piros/sárga kiemelés CSAK gyanús riasztásoknál */
         printf("  \033[1;31m▶ [CRITICAL ALERT %s]\033[0m \033[1;37m%-16s\033[0m ➔ \033[1;37m%-16s\033[0m | \033[1;31m%8.2f %s\033[0m | \033[0;33m%s\033[0m\n",
                alert_opt->rule_id, tx->originator_account, tx->beneficiary_account, tx->amount, tx->currency, alert_opt->reason);
     } else {
-        // Muted normal transaction log stream
+        /* Muted normal transaction log stream / Halkított normál tranzakció naplófolyam */
         printf("  \033[0;37m• [STREAM]\033[0m %-18s ➔ %-18s | %8.2f %-4s | %-10s\n",
                tx->originator_account, tx->beneficiary_account, tx->amount, tx->currency, tx->channel);
     }
 }
 
+/*
+ * Render the final evaluation report to console.
+ * Végső értékelési jelentés megjelenítése a konzolon.
+ *
+ * @param report Report data / Jelentés adatok.
+ */
 void unicagd_tui_render_final_report(const unicagd_report_t* report) {
     if (!report) return;
 
@@ -308,6 +427,15 @@ void unicagd_tui_render_final_report(const unicagd_report_t* report) {
     }
 }
 
+/*
+ * Export report to HTML file in specified language.
+ * Jelentés exportálása HTML fájlba megadott nyelven.
+ *
+ * @param report Report data / Jelentés adatok.
+ * @param output_filepath Output file path / Kimeneti fájl elérési út.
+ * @param language_code Language code ("hu" or "en") / Nyelv kód ("hu" vagy "en").
+ * @return 0 on success / sikeres végrehajtás esetén 0.
+ */
 int unicagd_export_html_report(
     const unicagd_report_t* report,
     const char* output_filepath,

@@ -1,13 +1,34 @@
 import { EvaluationReport, RiskAlert, Transaction } from '../types';
 
+/*
+ * AML Engine - TypeScript Modern Implementation.
+ * AML Motor - TypeScript Modern implementáció.
+ *
+ * This class performs real-time AML/fraud evaluation on transaction streams.
+ * Ez az osztály valós idejű AML/csalási értékelést végez tranzakciófolyamokon.
+ */
 export class AmlEngine {
   private readonly hardware: string;
 
+  /*
+   * Create an AML engine instance.
+   * AML motor példány létrehozása.
+   *
+   * @param hardware Hardware description / Hardver leírás.
+   */
   constructor(hardware = 'TypeScript SIMD V8 Engine / Metal GPU') {
     this.hardware = hardware;
   }
 
+  /*
+   * Evaluate a batch of transactions for AML/fraud patterns.
+   * Tranzakciók köteg értékelése AML/csalási minták szempontjából.
+   *
+   * @param transactions Array of transactions / Tranzakciók tömbje.
+   * @return Evaluation report with alerts / Riasztásokat tartalmazó értékelési jelentés.
+   */
   public evaluate(transactions: Transaction[]): EvaluationReport {
+    /* Start high-resolution timer / Magas felbontású időzítő indítása */
     const t0 = performance.now();
     const alerts: RiskAlert[] = [];
     let totalVolume = 0;
@@ -17,14 +38,24 @@ export class AmlEngine {
     let highCount = 0;
     let mediumCount = 0;
 
-    // Fast O(1) sanctions set
+    /*
+     * Fast O(1) sanctions set for high-risk jurisdictions.
+     * Gyors O(1) szankciókészlet kockázatos joghatóságokhoz.
+     */
     const sanctionsSet = new Set(['SC', 'RU', 'IR', 'KP', 'KY']);
 
+    /*
+     * Main evaluation loop.
+     * Fő értékelési ciklus.
+     */
     for (let i = 0; i < transactions.length; i++) {
       const tx = transactions[i];
       totalVolume += tx.amount;
 
-      // 1. Sanctions / High-Risk Jurisdictions
+      /*
+       * Rule 1: Sanctions / High-Risk Jurisdictions (AML-003).
+       * Szabály 1: Szankciók / kockázatos joghatóságok (AML-003).
+       */
       if (tx.country && sanctionsSet.has(tx.country.toUpperCase())) {
         alerts.push({
           alert_id: `ALT_AML003_${tx.country}_${i}`,
@@ -45,7 +76,10 @@ export class AmlEngine {
         criticalCount++;
       }
 
-      // 2. Smurfing / Structuring (AML-001)
+      /*
+       * Rule 2: Smurfing / Structuring (AML-001).
+       * Szabály 2: Szerkeztetés / csoportosítás (AML-001).
+       */
       if (tx.amount >= 7500 && tx.amount < 10000 && !tx.is_card) {
         alerts.push({
           alert_id: `ALT_AML001_${i}`,
@@ -65,7 +99,10 @@ export class AmlEngine {
         highCount++;
       }
 
-      // 3. Card Fraud Anomaly (FRD-003)
+      /*
+       * Rule 3: Card Fraud Anomaly (FRD-003).
+       * Szabály 3: Kártyasalcsalás anomália (FRD-003).
+       */
       if (tx.is_card && tx.amount > 1200) {
         alerts.push({
           alert_id: `ALT_FRD003_${i}`,
@@ -86,6 +123,7 @@ export class AmlEngine {
       }
     }
 
+    /* Calculate final metrics / Végső metrikák számítása */
     const t1 = performance.now();
     const durationSec = Math.max(0.0001, (t1 - t0) / 1000);
 
@@ -106,14 +144,29 @@ export class AmlEngine {
     };
   }
 
+  /*
+   * Generate synthetic transaction stream for testing.
+   * Szintetikus tranzakciófolyam generálása teszteléshez.
+   *
+   * @param count Number of transactions to generate / Generálandó tranzakciók száma.
+   * @param fraudRatio Ratio of fraudulent transactions / Csalási tranzakciók aránya.
+   * @return Array of generated transactions / Generált tranzakciók tömbje.
+   */
   public generateSyntheticStream(count: number, fraudRatio = 0.08): Transaction[] {
+    /* Supported countries / Támogatott országok */
     const countries = ['US', 'HU', 'DE', 'FR', 'GB', 'CH', 'SC', 'RU', 'KY'];
+    /* Supported transaction channels / Támogatott tranzakció csatornák */
     const channels = ['ACH', 'SWIFT', 'SEPA', 'CARD_CHIP', 'CARD_SWIPE', 'ONLINE'];
     const transactions: Transaction[] = [];
 
     const now = Date.now();
 
+    /*
+     * Generate each transaction.
+     * Egyes tranzakciók generálása.
+     */
     for (let i = 0; i < count; i++) {
+      /* Determine fraud status / Csalási állapot meghatározása */
       const isFraud = Math.random() < fraudRatio;
       const isCard = Math.random() > 0.5;
 
@@ -122,10 +175,12 @@ export class AmlEngine {
       let amount = 0;
 
       if (isCard) {
+        /* Card transaction / Kártya tranzakció */
         orig = `USER_${Math.floor(Math.random() * 500)}_CARD_${Math.floor(Math.random() * 3)}`;
         bene = `MERCHANT_${Math.floor(Math.random() * 100000000)}`;
         amount = isFraud ? 1200 + Math.random() * 2500 : 5 + Math.random() * 120;
       } else {
+        /* Wire/bank transaction / Banki átutalás */
         const src = Math.floor(Math.random() * 5000);
         let dst = Math.floor(Math.random() * 5000);
         if (src === dst) dst = (src + 1) % 5000;
@@ -134,6 +189,7 @@ export class AmlEngine {
         amount = isFraud ? 7800 + Math.random() * 2100 : 50 + Math.random() * 800;
       }
 
+      /* Fraud trigger for Seychelles / Csalási trigger Seychelles-hez */
       const country = isFraud && Math.random() < 0.25 ? 'SC' : countries[Math.floor(Math.random() * 6)];
       const channel = isCard ? channels[3 + Math.floor(Math.random() * 3)] : channels[Math.floor(Math.random() * 3)];
 
