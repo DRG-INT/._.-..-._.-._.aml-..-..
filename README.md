@@ -2,7 +2,7 @@
 
 **High-Performance, Multi-Platform Financial Crime (AML & Anti-Fraud) Engine & GPU Compute Ecosystem**
 
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE)
 [![Platforms](https://img.shields.io/badge/platforms-FreeBSD%20|%20Linux%20|%20macOS%20|%20Windows-brightgreen.svg)]()
 [![Code Quality](https://img.shields.io/badge/code%20quality-100%25%20passed%20(0%20warnings)-brightgreen.svg)]()
 [![Hardware](https://img.shields.io/badge/accelerators-Metal%20|%20Vulkan%20|%20CUDA%20|%20APE--C99-orange.svg)]()
@@ -210,4 +210,4 @@ Precompiled native release packages for all supported platforms and architecture
 ---
 
 ## 📜 License
-Apache License 2.0. Developed by the UNICAGD Core Team.
+Dual-licensed under MIT and Apache License 2.0. Developed by UNICAGD.
