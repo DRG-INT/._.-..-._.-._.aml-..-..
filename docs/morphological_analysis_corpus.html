@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNICAGD_AML - Mathematical Morphology Analysis Corpus</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0d1117; color: #c9d1d9; padding: 30px; line-height: 1.6; }
+        .container { max-width: 1400px; margin: auto; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 24px; }
+        h1, h2, h3 { color: #58a6ff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; margin-bottom: 24px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background: #21262d; color: #f0f6fc; }
+        .critical { color: #f85149; font-weight: bold; }
+        .high { color: #d29922; font-weight: bold; }
+        .formula { background: #21262d; padding: 12px; border-radius: 6px; font-family: 'Courier New', monospace; margin: 8px 0; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #238636; color: white; margin-right: 8px; }
+        .section { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid #30363d; }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h1>🔬 UNICAGD_AML Mathematical Morphology Analysis Corpus</h1>
+        <p><span class='badge'>Version 1.3.0</span><span class='badge'>Julia Analysis</span><span class='badge'>2026-08-31</span></p>
+        
+        <div class='section'>
+            <h2>📊 Stream Metadata</h2>
+            <table>
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Stream Size</td><td>10000 transactions</td></tr>
+                <tr><td>Total Volume</td><td>$1,247,832.45 USD</td></tr>
+                <tr><td>Unique Countries</td><td>11</td></tr>
+                <tr><td>Card Transaction Ratio</td><td>50.23%</td></tr>
+            </table>
+        </div>
+        
+        <div class='section'>
+            <h2>🧮 Structuring Elements</h2>
+            <p>Mathematical morphology structuring elements define the patterns for detection:</p>
+            <table>
+                <tr><th>Rule</th><th>Condition</th><th>Category</th><th>Severity</th><th>Confidence</th></tr>
+                <tr>
+                    <td><strong>AML-001</strong></td>
+                    <td><code>7500.0 ≤ amount < 10000.0 ∧ ¬is_card</code></td>
+                    <td>CATEGORY_SMURFING_STRUCTURING</td>
+                    <td class='high'>HIGH</td>
+                    <td>0.92</td>
+                </tr>
+                <tr>
+                    <td><strong>AML-003</strong></td>
+                    <td><code>country ∈ {SC, RU, IR, KP, KY}</code></td>
+                    <td>CATEGORY_HIGH_RISK_JURISDICTION</td>
+                    <td class='critical'>CRITICAL</td>
+                    <td>0.98</td>
+                </tr>
+                <tr>
+                    <td><strong>FRD-003</strong></td>
+                    <td><code>is_card ∧ amount > 1200.0</code></td>
+                    <td>CATEGORY_APP_SCAM</td>
+                    <td class='high'>HIGH</td>
+                    <td>0.89</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class='section'>
+            <h2>📐 Mathematical Formulas</h2>
+            <div class='formula'><strong>Erosion:</strong><br><code>A ⊖ B = {z | B_z ⊆ A}</code></div>
+            <div class='formula'><strong>Dilation:</strong><br><code>A ⊕ B = {z | (B̂_z ∩ A) ≠ ∅}</code></div>
+            <div class='formula'><strong>Opening:</strong><br><code>A ∘ B = (A ⊖ B) ⊕ B</code></div>
+            <div class='formula'><strong>Closing:</strong><br><code>A • B = (A ⊕ B) ⊖ B</code></div>
+            <div class='formula'><strong>Hit-or-Miss:</strong><br><code>A ⊛ B = (A ⊖ B₁) ∩ (A^c ⊖ B₂)</code></div>
+            <div class='formula'><strong>Morphological Gradient:</strong><br><code>Grad(A) = (A ⊕ B) - (A ⊖ B)</code></div>
+            <div class='formula'><strong>Top-Hat Transform:</strong><br><code>T_hat(A) = A - (A ∘ B)</code></div>
+            <div class='formula'><strong>Structuring Element:</strong><br><code>B = {x | condition(x) = true}</code></div>
+            <div class='formula'><strong>Confidence Score:</strong><br><code>C = TP / (TP + FP)</code></div>
+            <div class='formula'><strong>Throughput:</strong><br><code>T = N / t</code></div>
+            <div class='formula'><strong>Alert Volume:</strong><br><code>V = Σ_{i=1}^{N_alerts} amount_i</code></div>
+        </div>
+        
+        <div class='section'>
+            <h2>🔍 Morphological Operation Results</h2>
+            <table>
+                <tr><th>Operation</th><th>Erosion Hits</th><th>Dilation Hits</th><th>Opening Hits</th><th>Closing Hits</th><th>Hit-or-Miss</th><th>Boundaries</th><th>Anomalies</th></tr>
+                <tr>
+                    <td><strong>AML-001</strong></td>
+                    <td>423</td><td>1892</td><td>398</td><td>612</td><td>423</td><td>1469</td><td>25</td>
+                </tr>
+                <tr>
+                    <td><strong>AML-003</strong></td>
+                    <td>187</td><td>756</td><td>165</td><td>312</td><td>187</td><td>569</td><td>22</td>
+                </tr>
+                <tr>
+                    <td><strong>FRD-003</strong></td>
+                    <td>892</td><td>2341</td><td>856</td><td>1023</td><td>892</td><td>1449</td><td>36</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class='section'>
+            <h2>📈 Detection Statistics</h2>
+            <table>
+                <tr><th>Metric</th><th>Value</th></tr>
+                <tr><td>Mean Amount</td><td>$124.78</td></tr>
+                <tr><td>Std Deviation</td><td>$892.34</td></tr>
+                <tr><td>Min Amount</td><td>$5.00</td></tr>
+                <tr><td>Max Amount</td><td>$9,999.99</td></tr>
+                <tr><td>Median Amount</td><td>$67.50</td></tr>
+                <tr><td>AML-001 Detected</td><td>423</td></tr>
+                <tr><td>AML-003 Detected</td><td>187</td></tr>
+                <tr><td>FRD-003 Detected</td><td>892</td></tr>
+                <tr><td>Total Alerts</td><td class='critical'>1502</td></tr>
+            </table>
+        </div>
+        
+        <div class='section'>
+            <h2>📝 Interpretation</h2>
+            <p>This mathematical morphology analysis corpus provides a formal set-theoretic interpretation of the UNICAGD_AML detection engine:</p>
+            <ul>
+                <li><strong>Structuring Elements (B):</strong> Define the morphological "patterns" being searched for in transaction streams. Each rule (AML-001, AML-003, FRD-003) corresponds to a different structuring element.</li>
+                <li><strong>Erosion (⊖):</strong> Removes transactions that don't match the structuring element, effectively filtering out legitimate transactions.</li>
+                <li><strong>Dilation (⊕):</strong> Expands suspicious regions to include neighboring transactions that may be part of the same pattern.</li>
+                <li><strong>Opening (∘):</strong> Removes isolated false positives while preserving genuine patterns.</li>
+                <li><strong>Closing (•):</strong> Connects nearby suspicious transactions that may be part of the same criminal network.</li>
+                <li><strong>Hit-or-Miss (⊛):</strong> Precisely identifies transactions matching the exact structuring element pattern.</li>
+                <li><strong>Morphological Gradient (Grad):</strong> Highlights boundaries between legitimate and suspicious transaction regions.</li>
+                <li><strong>Top-Hat (T_hat):</strong> Isolates isolated anomalies that might indicate novel fraud patterns.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
